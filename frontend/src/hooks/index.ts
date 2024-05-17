@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
 
-interface Blog {
+export interface Blog {
   content: string;
   title: string;
   id: number;
@@ -10,6 +10,35 @@ interface Blog {
     name: string;
   };
 }
+
+export const useBlog = ({ id }: { id: string }) => {
+  const [loading, setLoading] = useState(true);
+  const [blog, setBlog] = useState<Blog>();
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log("Response:", response.data.blog);
+        setBlog(response.data.blogs);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("Error fetching blogs:", error);
+        console.log("Error status:", error.response?.status);
+      });
+  }, [id]);
+
+  return {
+    loading,
+    blog,
+  };
+};
+
 export const useBlogs = () => {
   const [loading, setLoading] = useState(true);
   const [blogs, setBogs] = useState<Blog[]>([]);
@@ -22,7 +51,7 @@ export const useBlogs = () => {
         },
       })
       .then((response) => {
-        console.log("Response:", response);
+        console.log("Response:", response.data.blogs);
         setBogs(response.data.blogs);
         setLoading(false);
       })

@@ -16,8 +16,8 @@ export const Blogs = () => {
         <div className="justify-center max-w-xl">
           {blogs.map((blog) => (
             <BlogCard
-              key={blog.id}
-              authorName={blog.author.name}
+              id={blog.id}
+              authorName={blog.author.name || "Bipul"}
               title={blog.title}
               content={blog.content}
               publishedData={"14 May 2024"}
