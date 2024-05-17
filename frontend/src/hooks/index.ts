@@ -13,7 +13,7 @@ export interface Blog {
 
 export const useBlog = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState(true);
-  const [blog, setBlog] = useState<Blog>();
+  const [blog, setBlog] = useState<Blog | null>(null);
 
   useEffect(() => {
     axios
@@ -23,13 +23,14 @@ export const useBlog = ({ id }: { id: string }) => {
         },
       })
       .then((response) => {
-        console.log("Response:", response.data.blog);
-        setBlog(response.data.blogs);
-        setLoading(false);
+        setBlog(response.data.blog);
       })
       .catch((error) => {
-        console.log("Error fetching blogs:", error);
-        console.log("Error status:", error.response?.status);
+        console.error("Error fetching blog:", error);
+        setBlog(null);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [id]);
 

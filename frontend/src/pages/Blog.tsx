@@ -12,6 +12,10 @@ export const Blog = () => {
   if (loading) {
     return <div> Loading..</div>;
   }
+
+  // if (!blog) {
+  //   return <div>No blog found</div>;
+  // }
   return (
     <div>
       <BlogDetails blog={blog} />
